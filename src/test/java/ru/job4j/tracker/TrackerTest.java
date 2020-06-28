@@ -1,6 +1,9 @@
 package ru.job4j.tracker;
 
 import junit.framework.TestCase;
+
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -31,8 +34,8 @@ public class TrackerTest extends TestCase {
         tracker.add(new Item("Test 2"));
         tracker.add(new Item("Test 3"));
 
-        Item[] items = tracker.findAll();
-        assertThat(items.length, is(3));
+        List<Item> items = tracker.findAll();
+        assertThat(items.size(), is(3));
     }
 
     public void testWhenFindItemsByNameThan2ItemsFound() {
@@ -41,8 +44,8 @@ public class TrackerTest extends TestCase {
         tracker.add(new Item("Test 2"));
         tracker.add(new Item("Test 3"));
 
-        Item[] items = tracker.findByName("Test 2");
-        assertThat(items.length, is(2));
+        List<Item> items = tracker.findByName("Test 2");
+        assertThat(items.size(), is(2));
     }
 
     public void testWhenFindItemsByNameThanNoItemsFound() {
@@ -51,8 +54,8 @@ public class TrackerTest extends TestCase {
         tracker.add(new Item("Test 2"));
         tracker.add(new Item("Test 3"));
 
-        Item[] items = tracker.findByName("Test 4");
-        assertThat(items.length, is(0));
+        List<Item> items = tracker.findByName("Test 4");
+        assertThat(items.size(), is(0));
     }
 
     public void testWhenReplace() {
