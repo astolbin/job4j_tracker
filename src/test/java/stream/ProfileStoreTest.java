@@ -19,4 +19,24 @@ public class ProfileStoreTest {
 
         assertThat(rsl, is(address));
     }
+
+    @Test
+    public void whenExtractAddressCollectionDistinct() {
+        List<Profile> profiles = new ArrayList<>();
+
+        profiles.add(new Profile(
+                new Address("City2", "Street", 23, 32)
+        ));
+        profiles.add(new Profile(
+                new Address("City2", "Street", 23, 32)
+        ));
+        profiles.add(new Profile(
+                new Address("City1", "Street", 23, 32)
+        ));
+
+        List<Address> addresses = new ProfileStore().collectDistinct(profiles);
+
+        assertThat(addresses.get(0), is(new Address("City1", "Street", 23, 32)));
+        assertThat(addresses.size(), is(2));
+    }
 }
