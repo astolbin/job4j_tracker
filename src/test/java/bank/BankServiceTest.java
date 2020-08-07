@@ -36,8 +36,9 @@ public class BankServiceTest {
         User user = new User("3434", "Petr Arsentev");
         BankService bank = new BankService();
         bank.addUser(user);
+        bank.addAccount(user.getPassport(), null);
         bank.addAccount(user.getPassport(), new Account("5546", 150D));
-        assertNull(bank.findByRequisite("34", "5546"));
+        assertNull(bank.findByRequisite("3434", "55"));
     }
 
     @Test

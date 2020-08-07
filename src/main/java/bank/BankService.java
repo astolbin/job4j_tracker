@@ -1,9 +1,6 @@
 package bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BankService {
     private final Map<User, List<Account>> users = new HashMap<>();
@@ -23,14 +20,10 @@ public class BankService {
     }
 
     public User findByPassport(String passport) {
-        User rsl = null;
-        for (User user : users.keySet()) {
-            if (user.getPassport().equals(passport)) {
-                rsl = user;
-                break;
-            }
-        }
-        return rsl;
+        return users.keySet().stream()
+                .filter(user -> user.getPassport().equals(passport))
+                .findFirst()
+                .orElse(null);
     }
 
     public Account findByRequisite(String passport, String requisite) {
@@ -39,10 +32,10 @@ public class BankService {
 
         if (user != null) {
             List<Account> accounts = users.get(user);
-            int index = accounts.indexOf(new Account(requisite, -1));
-            if (index > -1) {
-                rsl = accounts.get(index);
-            }
+            rsl = accounts.stream()
+                    .filter(acc -> Objects.equals(acc, new Account(requisite, -1)))
+                    .findFirst()
+                    .orElse(null);
         }
 
         return rsl;
