@@ -2,8 +2,6 @@ package collections;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,12 +11,11 @@ import static org.junit.Assert.*;
 public class FullSearchTest {
     @Test
     public void extractNumber() {
-        List<TaskNumber> tasks = Arrays.asList(
+        List<TaskNumber> tasks = List.of(
             new TaskNumber("1", "First desc"),
             new TaskNumber("2", "Second desc"),
             new TaskNumber("1", "First desc")
         );
-        Set<String> expected = new HashSet<>(Arrays.asList("1", "2"));
-        assertThat(FullSearch.extractNumber(tasks), is(expected));
+        assertThat(FullSearch.extractNumber(tasks), is(Set.of("1", "2")));
     }
 }
