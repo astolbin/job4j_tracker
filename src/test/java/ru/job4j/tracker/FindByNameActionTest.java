@@ -16,6 +16,11 @@ public class FindByNameActionTest {
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     @Before
+    public void clearItems() {
+        TrackerCleaner.clear();
+    }
+
+    @Before
     public void loadOutput() {
         System.setOut(new PrintStream(this.out));
     }
@@ -27,7 +32,8 @@ public class FindByNameActionTest {
 
     @Test
     public void whenItemsFound() {
-        Tracker tracker = new Tracker();
+        SqlTracker tracker = new SqlTracker();
+        tracker.init();
         Item[] items = {
             new Item("Test 1"),
             new Item("Test 2"),
@@ -48,12 +54,13 @@ public class FindByNameActionTest {
             .add(items[2].toString())
             .add("")
             .toString();
-        assertThat(new String(out.toByteArray()), is(expect));
+        assertThat(out.toString(), is(expect));
     }
 
     @Test
     public void whenItemsNotFound() {
-        Tracker tracker = new Tracker();
+        SqlTracker tracker = new SqlTracker();
+        tracker.init();
         Item[] items = {
             new Item("Test 1"),
             new Item("Test 2"),
@@ -68,6 +75,6 @@ public class FindByNameActionTest {
             .add("=== Find item by name ====")
             .add("")
             .toString();
-        assertThat(new String(out.toByteArray()), is(expect));
+        assertThat(out.toString(), is(expect));
     }
 }

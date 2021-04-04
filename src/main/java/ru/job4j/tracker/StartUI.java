@@ -3,7 +3,8 @@ package ru.job4j.tracker;
 public class StartUI {
     public static void main(String[] args) {
         Input input = new ValidateInput(new ConsoleInput());
-        Tracker tracker = new Tracker();
+        SqlTracker tracker = new SqlTracker();
+        tracker.init();
         UserAction[] actions = {
             new CreateAction(),
             new ShowAllAction(),
@@ -16,7 +17,7 @@ public class StartUI {
         new StartUI().init(input, tracker, actions);
     }
 
-    public void init(Input input, Tracker tracker, UserAction[] actions) {
+    public void init(Input input, Store tracker, UserAction[] actions) {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
