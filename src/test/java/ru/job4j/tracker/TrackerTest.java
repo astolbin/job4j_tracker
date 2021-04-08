@@ -3,6 +3,7 @@ package ru.job4j.tracker;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -10,17 +11,15 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 
 public class TrackerTest{
-    private SqlTracker tracker;
+    private Store tracker;
 
     @Before
-    public void clearItems() {
-        TrackerCleaner.clear();
-    }
-
-    @Before
-    public void initTracker() {
-        tracker = new SqlTracker();
-        tracker.init();
+    public void initTracker() throws SQLException {
+        tracker = new SqlTracker(
+                ConnectionRollback.create(
+                        ConnectionGenerator.get("app.properties")
+                )
+        );
     }
 
     @Test

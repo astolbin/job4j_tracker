@@ -1,22 +1,35 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.StringJoiner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class StartUITest {
+    private Store tracker;
+
+    @Before
+    public void initTracker() throws SQLException {
+        tracker = new SqlTracker(
+                ConnectionRollback.create(
+                        ConnectionGenerator.get("app.properties")
+                )
+        );
+    }
+
     @Test
     public void whenExit() {
         StubInput input = new StubInput(
             new String[] {"0"}
         );
         StubAction action = new StubAction();
-        new StartUI().init(input, new SqlTracker(), new UserAction[] { action });
+        new StartUI().init(input, tracker, new UserAction[] { action });
         assertThat(action.isCall(), is(true));
     }
 
@@ -29,7 +42,7 @@ public class StartUITest {
             new String[] {"0"}
         );
         StubAction action = new StubAction();
-        new StartUI().init(input, new SqlTracker(), new UserAction[] { action });
+        new StartUI().init(input, tracker, new UserAction[] { action });
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
             .add("Menu.")
             .add("0. Stub action")

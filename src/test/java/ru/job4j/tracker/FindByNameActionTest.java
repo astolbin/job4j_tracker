@@ -6,18 +6,24 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.StringJoiner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class FindByNameActionTest {
+    private Store tracker;
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     @Before
-    public void clearItems() {
-        TrackerCleaner.clear();
+    public void initTracker() throws SQLException {
+        tracker = new SqlTracker(
+                ConnectionRollback.create(
+                        ConnectionGenerator.get("app.properties")
+                )
+        );
     }
 
     @Before
@@ -32,8 +38,6 @@ public class FindByNameActionTest {
 
     @Test
     public void whenItemsFound() {
-        SqlTracker tracker = new SqlTracker();
-        tracker.init();
         Item[] items = {
             new Item("Test 1"),
             new Item("Test 2"),
@@ -59,8 +63,6 @@ public class FindByNameActionTest {
 
     @Test
     public void whenItemsNotFound() {
-        SqlTracker tracker = new SqlTracker();
-        tracker.init();
         Item[] items = {
             new Item("Test 1"),
             new Item("Test 2"),

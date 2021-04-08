@@ -3,8 +3,9 @@ package ru.job4j.tracker;
 public class StartUI {
     public static void main(String[] args) {
         Input input = new ValidateInput(new ConsoleInput());
-        SqlTracker tracker = new SqlTracker();
-        tracker.init();
+        SqlTracker tracker = new SqlTracker(
+                ConnectionGenerator.get("app.properties")
+        );
         UserAction[] actions = {
             new CreateAction(),
             new ShowAllAction(),
