@@ -35,7 +35,7 @@ public class SqlTracker implements Store {
             statement.executeUpdate();
             ResultSet rsl = statement.getGeneratedKeys();
             if (rsl.next()) {
-                item.setId(rsl.getString("id"));
+                item.setId(rsl.getInt("id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +48,7 @@ public class SqlTracker implements Store {
     public boolean replace(int id, Item item) {
         boolean rsl = false;
         String sql = "update items set name = ? where id = ?";
-        try (PreparedStatement statement = cn.prepareStatement(sql);) {
+        try (PreparedStatement statement = cn.prepareStatement(sql)) {
             statement.setString(1, item.getName());
             statement.setInt(2, id);
             rsl = statement.executeUpdate() > 0;
@@ -67,7 +67,7 @@ public class SqlTracker implements Store {
             ResultSet rsl = statement.executeQuery();
             while (rsl.next()) {
                 Item item = new Item(rsl.getString("name"));
-                item.setId(rsl.getString("id"));
+                item.setId(rsl.getInt("id"));
                 items.add(item);
             }
         } catch (SQLException e) {
@@ -86,7 +86,7 @@ public class SqlTracker implements Store {
             ResultSet rsl = statement.executeQuery();
             while (rsl.next()) {
                 Item item = new Item(rsl.getString("name"));
-                item.setId(rsl.getString("id"));
+                item.setId(rsl.getInt("id"));
                 items.add(item);
             }
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class SqlTracker implements Store {
             ResultSet rsl = statement.executeQuery();
             if (rsl.next()) {
                 item = new Item(rsl.getString("name"));
-                item.setId(rsl.getString("id"));
+                item.setId(rsl.getInt("id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

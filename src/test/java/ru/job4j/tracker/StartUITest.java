@@ -15,12 +15,8 @@ public class StartUITest {
     private Store tracker;
 
     @Before
-    public void initTracker() throws SQLException {
-        tracker = new SqlTracker(
-                ConnectionRollback.create(
-                        ConnectionGenerator.get("app.properties")
-                )
-        );
+    public void initTracker() {
+        tracker = new MemTracker();
     }
 
     @Test

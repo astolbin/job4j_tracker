@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MemTracker {
+public class MemTracker implements Store {
     private final List<Item> items = new ArrayList<>();
 
     public Item add(Item item) {
@@ -13,12 +13,12 @@ public class MemTracker {
         return item;
     }
 
-    private String generateId() {
+    private int generateId() {
         Random rm = new Random();
-        return String.valueOf(rm.nextLong() + System.currentTimeMillis());
+        return (int) (rm.nextLong() + System.currentTimeMillis());
     }
 
-    public Item findById(String id) {
+    public Item findById(int id) {
         int index = indexOf(id);
         return index != -1 ? items.get(index) : null;
     }
@@ -39,11 +39,11 @@ public class MemTracker {
         return itemsFound;
     }
 
-    private int indexOf(String id) {
+    private int indexOf(int id) {
         int rsl = -1;
         for (int index = 0; index < items.size(); index++) {
             Item item = items.get(index);
-            if (item.getId().equals(id)) {
+            if (item.getId() == id) {
                 rsl = index;
                 break;
             }
@@ -51,7 +51,7 @@ public class MemTracker {
         return rsl;
     }
 
-    public boolean replace(String id, Item itemForReplace) {
+    public boolean replace(int id, Item itemForReplace) {
         int index = indexOf(id);
         boolean result = false;
         if (index >= 0 && itemForReplace != null) {
@@ -62,7 +62,7 @@ public class MemTracker {
         return result;
     }
 
-    public boolean delete(String id) {
+    public boolean delete(int id) {
         boolean result = false;
         int index = indexOf(id);
         if (index >= 0) {
@@ -70,5 +70,10 @@ public class MemTracker {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public void close() {
+
     }
 }

@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.sql.SQLException;
 import java.util.StringJoiner;
 
 import static org.hamcrest.core.Is.is;
@@ -18,12 +17,8 @@ public class FindByNameActionTest {
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     @Before
-    public void initTracker() throws SQLException {
-        tracker = new SqlTracker(
-                ConnectionRollback.create(
-                        ConnectionGenerator.get("app.properties")
-                )
-        );
+    public void initTracker() {
+        tracker = new MemTracker();
     }
 
     @Before

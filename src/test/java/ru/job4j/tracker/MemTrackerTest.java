@@ -3,23 +3,18 @@ package ru.job4j.tracker;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-public class TrackerTest{
-    private Store tracker;
+public class MemTrackerTest {
+    private MemTracker tracker;
 
     @Before
-    public void initTracker() throws SQLException {
-        tracker = new SqlTracker(
-                ConnectionRollback.create(
-                        ConnectionGenerator.get("app.properties")
-                )
-        );
+    public void initTracker() {
+        tracker = new MemTracker();
     }
 
     @Test
@@ -27,7 +22,7 @@ public class TrackerTest{
         Item item = new Item("Test 1");
         tracker.add(item);
 
-        Item result = tracker.findById(Integer.parseInt(item.getId()));
+        Item result = tracker.findById(item.getId());
         assertThat(result.getName(), is(item.getName()));
     }
 
@@ -73,7 +68,7 @@ public class TrackerTest{
     public void whenReplace() {
         Item bug = new Item("Bug");
         tracker.add(bug);
-        int id = Integer.parseInt(bug.getId());
+        int id = bug.getId();
         Item bugWithDesc = new Item("Bug with description");
         boolean result = tracker.replace(id, bugWithDesc);
         assertThat(result, is(true));
@@ -84,7 +79,7 @@ public class TrackerTest{
     public void whenReplaceNotFound() {
         Item bug = new Item("Bug");
         tracker.add(bug);
-        int id = Integer.parseInt(bug.getId());
+        int id = bug.getId();
         Item bugWithDesc = new Item("Bug with description");
         boolean result = tracker.replace(-1, bugWithDesc);
         assertThat(result, is(false));
@@ -95,7 +90,7 @@ public class TrackerTest{
     public void whenDelete() {
         Item bug = new Item("Bug");
         tracker.add(bug);
-        int id = Integer.parseInt(bug.getId());
+        int id = bug.getId();
         boolean result = tracker.delete(id);
 
         assertThat(result, is(true));
@@ -106,7 +101,7 @@ public class TrackerTest{
     public void whenDeleteNotFound() {
         Item bug = new Item("Bug");
         tracker.add(bug);
-        int id = Integer.parseInt(bug.getId());
+        int id = bug.getId();
         boolean result = tracker.delete(-1);
 
         assertThat(result, is(false));
